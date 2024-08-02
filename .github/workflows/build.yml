@@ -1,0 +1,83 @@
+name: Build Custom
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "format %y.%m.$d or auto"
+        required: false
+        type: string
+      latest:
+        description: "latest"
+        default: true
+        type: boolean
+      prerelease:
+        description: "pre release"
+        default: false
+        type: boolean
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0
+
+      - name: Changelog
+        uses: Bullrich/generate-release-changelog@master
+        id: Changelog
+        env:
+          REPO: ${{ github.repository }}
+
+      - name: Init Env
+        run: |
+          git config --global user.email "info@auxxxilium.tech"
+          git config --global user.name "AuxXxilium"
+          sudo timedatectl set-timezone "Europe/Berlin" 
+
+      - name: Calculate version
+        run: |
+          # Calculate Version
+          VERSION=""
+          if [ -n "${{ inputs.version }}" ]; then
+            VERSION="${{ inputs.version }}"
+          else
+            VERSION="`date +'%y.%m.%d'`"
+          fi
+
+          if [ -n "${VERSION}" ]; then
+            # Modify Source File
+            echo "Version: ${VERSION}"
+            echo "${VERSION}" >VERSION
+            echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          fi
+
+      - name: Build Patches Package
+        run: |
+          zip -9j custom.zip -j *.tgz *.gz
+          sha256sum custom.zip >checksum.sha256
+
+      - name: Upload to Artifacts
+        if: success() && env.VERSION == ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: custom
+          path: |
+            custom.zip
+            checksum.sha256
+
+      - name: Release
+        if: success() && env.VERSION != ''
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ env.VERSION }}
+          makeLatest: ${{ inputs.latest }}
+          prerelease: ${{ inputs.prerelease }}
+          allowUpdates: true
+          body: |
+            ${{ steps.Changelog.outputs.changelog }}
+          artifacts: |
+            custom.zip
+            checksum.sha256
