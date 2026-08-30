@@ -43,6 +43,22 @@ sensors, the GPU. These builds add that support back.
 - ✅ **Aquantia / Marvell 10G** — aqtion
 - ✅ **Server cards** — Mellanox, Broadcom, Solarflare, QLogic
 
+### 💾 Storage
+
+- ✅ **SATA / AHCI** — onboard ports, plus port multipliers
+- ✅ **NVMe** — including M.2 and U.2
+- ✅ **LSI / Broadcom HBAs** — the 92xx/93xx/94xx family (mpt3sas), and the
+  newer 95xx (mpi3mr)
+- ✅ **LSI MegaRAID** — including the SAS cards (megaraid_sas)
+- ✅ **Broadcom / Microsemi** — smartpqi, HP Smart Array (hpsa)
+- ✅ **Adaptec** — aacraid
+- ✅ **Areca, 3ware, Marvell, Intel C600** — arcmsr, 3w-9xxx/3w-sas, mvsas, isci
+- ✅ **USB storage** — including UAS
+
+> 💡 **HBAs in IT mode are the usual pick** for passing disks straight through
+> to DSM. The LSI 9200/9300 series are the classic choice and work out of the
+> box.
+
 ### 🔌 Other
 
 - ✅ **Coral Edge TPU** — USB stick and PCIe/M.2 (Frigate etc.)
