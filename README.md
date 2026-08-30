@@ -64,7 +64,8 @@ sensors, the GPU. These builds add that support back.
 - ✅ **Coral Edge TPU** - USB stick and PCIe/M.2 (Frigate etc.)
 - ✅ **Sensors** - CPU temperature and fans, Intel and AMD
 - ✅ **USB** - USB 3 (xHCI), serial adapters, audio
-- ✅ **Filesystems** - exFAT, NTFS
+- 🧪 **Thunderbolt / USB4** - driver included, see [below](#-thunderbolt--usb4)
+- ✅ **Filesystems** - BTRFS, exFAT, NTFS
 
 ---
 
@@ -113,6 +114,29 @@ the Intel and AMD drivers are. Install it and your card is picked up there.
 
 > 💡 So: 🔵 Intel and 🔴 AMD → handled by this kernel, nothing to install.
 > 🟢 NVIDIA → install the DSM Nvidia Driver Package.
+
+---
+
+## ⚡ Thunderbolt / USB4
+
+The driver is built in, and it covers both vendors: Intel controllers up to the
+latest generation, and AMD USB4 through the generic host support every
+compliant controller uses. Nothing to install.
+
+🧪 **Treat it as experimental.** The driver loads and finds the controller, but
+on some machines it then times out talking to it. It is not yet clear how much
+of that is the hardware, the mainboard firmware, or DSM itself, so plugging a
+Thunderbolt dock or enclosure in and having it work is not something to count
+on.
+
+What is worth knowing before you plan around it:
+
+- 🔌 **Devices are not authorized automatically.** DSM has no Thunderbolt
+  settings, so anything requiring approval will simply not appear.
+- 💾 **Enclosures are the realistic use.** A Thunderbolt or USB4 disk enclosure
+  is the case most likely to work; docks and displays are not the point here.
+- ➖ **Not a supported feature.** Nobody has validated this across machines. If
+  it works for you, good - it isn't something to buy hardware for yet.
 
 ---
 
