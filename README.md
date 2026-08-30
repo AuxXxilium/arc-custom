@@ -15,6 +15,7 @@ sensors, the GPU. These builds add that support back.
 
 - ✅ **Intel** — any modern CPU → use `epyc7002`
 - ✅ **AMD** — any modern CPU → use `epyc7002`
+- ✅ **Hybrid CPUs** — P-cores and E-cores handled properly, see [below](#-hybrid-cpus-p-cores--e-cores)
 
 > 💡 **Don't let the name fool you.** `epyc7002` is **not** AMD-only and has
 > nothing to do with owning an EPYC server. It's Synology's name for their
@@ -96,6 +97,34 @@ the Intel and AMD drivers are. Install it and your card is picked up there.
 
 > 💡 So: 🔵 Intel and 🔴 AMD → handled by this kernel, nothing to install.
 > 🟢 NVIDIA → install the DSM Nvidia Driver Package.
+
+---
+
+## 🧠 Hybrid CPUs (P-cores + E-cores)
+
+Modern CPUs often mix two kinds of core: a few fast ones and several efficient
+ones. Intel calls them **P-cores and E-cores**; AMD ships fast and dense cores
+(Zen 4 / Zen 4c) in the same way.
+
+**A stock 5.10 kernel doesn't know the difference.** It treats every core as
+identical and hands your heaviest job to a slow core as readily as a fast one.
+On a 14th-gen Core that means single-threaded work can land on an E-core and
+run noticeably slower for no reason.
+
+✅ **These builds fix that.** The scheduler is taught each core's real speed, so
+demanding work is steered onto the fast cores and background work drifts to the
+efficient ones. It's automatic — nothing to configure.
+
+### 🖥️ Which CPUs this applies to
+
+- ✅ **Intel** — 12th gen and newer with E-cores (Alder Lake, Raptor Lake,
+  Core Ultra). Verified on a Core i5-14400.
+- 🧪 **AMD** — Zen 4c parts: Ryzen 3 7440U, Ryzen 5 7445U, Ryzen 5 8540U, and
+  the Ryzen AI 300 series.
+- ➖ **Everything else** — CPUs with only one kind of core are completely
+  unaffected.
+
+---
 
 ### Links
 
