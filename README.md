@@ -29,7 +29,8 @@ sensors, the GPU. These builds add that support back.
 - ✅ **AMD Radeon RX 6000** - the full line, 6400 through 6900
 - ✅ **AMD Radeon RX 7000** - 7600 through 7900
 - ✅ **AMD integrated** - Ryzen APUs, including Ryzen AI 300
-- ❌ **Intel Arc B-series**, Lunar Lake, Arrow Lake, Panther Lake
+- 🧪 **Intel Arrow Lake** (Core Ultra 200S/H/U) - untested
+- ❌ **Intel Arc B-series**, Lunar Lake, Panther Lake
 - ➖ **NVIDIA** - not in this kernel; use the **DSM Nvidia Driver Package** instead
 
 ### 🌐 Network
@@ -84,10 +85,11 @@ conversion to the GPU instead of grinding the CPU. That's the reason to care.
 | Alder Lake / Raptor Lake | 12th–14th gen Core | ✅ |
 | Meteor Lake | Core Ultra series 1 | ✅ |
 | Arc A-series | A310, A380, A580, A750, A770 | ✅ |
-| Lunar Lake, Arrow Lake, Panther Lake | Core Ultra series 2+ | ❌ |
+| Arrow Lake | Core Ultra 200S, 200H, 200U | 🧪 |
+| Lunar Lake, Panther Lake | Core Ultra 200V, series 3 | ❌ |
 | Arc B-series | B570, B580 | ❌ |
 
-> 🛑 **Meteor Lake is a hard ceiling.** Everything newer needs a different
+> 🛑 **Meteor Lake is a hard ceiling** (Arrow Lake shares its graphics). Everything newer needs a different
 > driver (`xe`) that cannot work on a 5.10 kernel. This isn't waiting on
 > someone finding the time - it's structural. Buying hardware for this?
 > Stop at 14th gen or Arc A-series.
